@@ -1,4 +1,4 @@
 FinancesManager
 ===============
 
-it is a finances manager!!!
+it is a finances manager!!!!!!!!
