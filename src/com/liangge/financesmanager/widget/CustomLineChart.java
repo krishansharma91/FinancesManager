@@ -21,7 +21,7 @@ import java.util.Map;
 public class CustomLineChart extends View{
     private Paint paint = new Paint();
     /*当天星期数 0-6*/
-    private int dayOfWeek = 1;
+    private int dayOfWeek;
     /*图表展示数据*/
     private float[] costArray = {
             10.5f, 89.1f, 67.3f, 111f, 22f
