@@ -1,10 +1,18 @@
 package com.liangge.financesmanager.listener;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.WindowManager;
 import android.widget.Toast;
+import com.liangge.financesmanager.R;
+import com.liangge.financesmanager.activity.MainActivity;
+import com.liangge.financesmanager.utils.DateTimeUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+
+import java.util.Date;
 
 /**
  * User: liangge
@@ -17,9 +25,9 @@ public class MainGestureListener extends GestureDetector.SimpleOnGestureListener
     /*Y方向滑动距离*/
     private float gestureInstanceY;
 
-    private Context context;
+    private MainActivity context;
     public MainGestureListener(Context context){
-        this.context = context;
+        this.context = (MainActivity)context;
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         this.gestureInstanceX = windowManager.getDefaultDisplay().getWidth() / 8;
         this.gestureInstanceY = windowManager.getDefaultDisplay().getHeight() / 10;
@@ -36,9 +44,9 @@ public class MainGestureListener extends GestureDetector.SimpleOnGestureListener
         float instanceX = e2.getX() - e1.getX();
         float instanceY = e2.getY() - e1.getY();
 
-        /*向右滑*/
+        /*向右滑，查第二天*/
         if(instanceX > gestureInstanceX){
-            Toast.makeText(context, "right", Toast.LENGTH_SHORT).show();
+            startSwapActivity(DateTimeUtils.getTomorrow(context.getTodayStr()));
             return true;
         }
         /*向下滑*/
@@ -46,17 +54,31 @@ public class MainGestureListener extends GestureDetector.SimpleOnGestureListener
             Toast.makeText(context, "down", Toast.LENGTH_SHORT).show();
             return true;
         }
-        /*向左滑*/
+        /*向左滑，查昨天*/
         if(Math.abs(instanceX) > gestureInstanceX){
-            Toast.makeText(context, "left", Toast.LENGTH_SHORT).show();
+            startSwapActivity(DateTimeUtils.getYesterday(context.getTodayStr()));
             return true;
         }
-        /*向上滑*/
+        /*向上滑，查今天*/
         if(Math.abs(instanceY) > gestureInstanceY){
-            Toast.makeText(context, "top", Toast.LENGTH_SHORT).show();
+            startSwapActivity(DateFormatUtils.format(new Date(), DateTimeUtils.DATA_FORMAT_PATTERN));
             return true;
         }
 
         return super.onFling(e1, e2, velocityX, velocityY);
+    }
+
+    /**
+     * 切换屏幕
+     * @param dateStr
+     */
+    private void startSwapActivity(String dateStr){
+        Intent intent = new Intent(context, MainActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("date", dateStr);
+        intent.putExtras(bundle);
+        context.startActivity(intent);
+        context.overridePendingTransition(R.anim.dissolve_in, R.anim.dissolve_out);
+        context.finish();
     }
 }

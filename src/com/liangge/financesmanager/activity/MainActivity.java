@@ -13,6 +13,7 @@ import com.liangge.financesmanager.utils.ConfigUtils;
 import com.liangge.financesmanager.utils.DateTimeUtils;
 import com.liangge.financesmanager.utils.XmlConfig;
 import com.liangge.financesmanager.widget.CustomLineChart;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 import java.util.Date;
@@ -21,19 +22,34 @@ public class MainActivity extends Activity {
     private long exitTime = 0;
     /*屏幕滑动事件处理*/
     private GestureDetector gestureDetector;
+    /*当天时间参数 yyyy-MM-dd*/
+    private String todayStr;
+    public String getTodayStr() {
+        return todayStr;
+    }
+    public void setTodayStr(String todayStr) {
+        this.todayStr = todayStr;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        /*获取参数*/
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null && bundle.containsKey("date")){
+            setTodayStr(bundle.getString("date"));
+        }else{
+            setTodayStr(DateFormatUtils.format(new Date(), DateTimeUtils.DATA_FORMAT_PATTERN));
+        }
         /*初始化滑动手势事件*/
         gestureDetector = new GestureDetector(this, new MainGestureListener(this));
         /*初始化图表当天日期*/
         CustomLineChart lineChart = (CustomLineChart) findViewById(R.id.index_linechart);
-        lineChart.setDayOfWeek(DateTimeUtils.getDayOfWeek());
+        lineChart.setDayOfWeek(DateTimeUtils.getDayOfWeek(todayStr));
         /*初始化当天日期*/
         TextView indexNow = (TextView) findViewById(R.id.index_now);
-        indexNow.setText(DateFormatUtils.format(new Date(), "yyyy-MM-dd"));
+        indexNow.setText(todayStr);
 //        XmlConfig dbConfig = ConfigUtils.getDbConfig(this);
     }
 
