@@ -46,7 +46,6 @@ public class MainGestureListener extends GestureDetector.SimpleOnGestureListener
 
         /*向右滑，查第二天*/
         if(instanceX > gestureInstanceX){
-            startSwapActivity(DateTimeUtils.getTomorrow(context.getTodayStr()));
             return true;
         }
         /*向下滑*/
@@ -56,7 +55,6 @@ public class MainGestureListener extends GestureDetector.SimpleOnGestureListener
         }
         /*向左滑，查昨天*/
         if(Math.abs(instanceX) > gestureInstanceX){
-            startSwapActivity(DateTimeUtils.getYesterday(context.getTodayStr()));
             return true;
         }
         /*向上滑，查今天*/

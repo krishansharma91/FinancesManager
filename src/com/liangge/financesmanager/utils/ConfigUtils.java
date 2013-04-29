@@ -21,7 +21,7 @@ public class ConfigUtils {
      * @param context
      * @return
      */
-    public static XmlConfig getDbConfig(Context context){
+    public static XmlConfig getSqlConfig(Context context){
         int id = R.xml.sql;
         Map<String, String> resultMap = getXmlResultMap(context.getResources().getXml(id));
         return new XmlConfig(resultMap);

@@ -1,13 +1,15 @@
 package com.liangge.financesmanager.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.GestureDetector;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
+import android.support.v4.view.ViewPager;
+import android.view.*;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.liangge.financesmanager.R;
+import com.liangge.financesmanager.adapter.MainPageViewAdapter;
 import com.liangge.financesmanager.listener.MainGestureListener;
 import com.liangge.financesmanager.utils.ConfigUtils;
 import com.liangge.financesmanager.utils.DateTimeUtils;
@@ -16,41 +18,64 @@ import com.liangge.financesmanager.widget.CustomLineChart;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class MainActivity extends Activity {
     private long exitTime = 0;
     /*屏幕滑动事件处理*/
     private GestureDetector gestureDetector;
-    /*当天时间参数 yyyy-MM-dd*/
-    private String todayStr;
-    public String getTodayStr() {
-        return todayStr;
-    }
-    public void setTodayStr(String todayStr) {
-        this.todayStr = todayStr;
-    }
+    /*滑屏列表*/
+    private List<View> pageViewList = new ArrayList<View>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        /*获取参数*/
-        Bundle bundle = getIntent().getExtras();
-        if(bundle != null && bundle.containsKey("date")){
-            setTodayStr(bundle.getString("date"));
-        }else{
-            setTodayStr(DateFormatUtils.format(new Date(), DateTimeUtils.DATA_FORMAT_PATTERN));
-        }
-        /*初始化滑动手势事件*/
-        gestureDetector = new GestureDetector(this, new MainGestureListener(this));
-        /*初始化图表当天日期*/
-        CustomLineChart lineChart = (CustomLineChart) findViewById(R.id.index_linechart);
-        lineChart.setDayOfWeek(DateTimeUtils.getDayOfWeek(todayStr));
-        /*初始化当天日期*/
-        TextView indexNow = (TextView) findViewById(R.id.index_now);
-        indexNow.setText(todayStr);
+//        /*初始化图表当天日期*/
+//        CustomLineChart lineChart = (CustomLineChart) findViewById(R.id.index_linechart);
+//        lineChart.setDayOfWeek(DateTimeUtils.getDayOfWeek(todayStr));
+//        /*初始化当天日期*/
+//        TextView indexNow = (TextView) findViewById(R.id.index_now);
+//        indexNow.setText(todayStr);
 //        XmlConfig dbConfig = ConfigUtils.getDbConfig(this);
+
+        /*初始化view*/
+        LayoutInflater flater = getLayoutInflater();
+        for(int i=0;i<5;i++){
+            View view = flater.inflate(R.layout.main_pageview, null);
+            TextView textView = (TextView)view.findViewById(R.id.index_week);
+            textView.setText( i * 100 + "");
+            pageViewList.add(view);
+        }
+
+        MainPageViewAdapter pageViewAdapter = new MainPageViewAdapter(pageViewList);
+        ViewPager viewPager = (ViewPager)findViewById(R.id.main_viewpager);
+        viewPager.setAdapter(pageViewAdapter);
+        viewPager.setCurrentItem(1);
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i2) {
+            }
+            @Override
+            public void onPageSelected(int i) {
+            }
+            @Override
+            public void onPageScrollStateChanged(int i) {
+            }
+        });
+
+        /*测试*/
+        Button button = (Button)findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, PayActivity.class);
+                startActivity(intent);
+                MainActivity.this.finish();
+            }
+        });
     }
 
     @Override
