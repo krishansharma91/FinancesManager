@@ -13,6 +13,7 @@ import com.liangge.financesmanager.adapter.MainPageViewAdapter;
 import com.liangge.financesmanager.listener.MainGestureListener;
 import com.liangge.financesmanager.utils.ConfigUtils;
 import com.liangge.financesmanager.utils.DateTimeUtils;
+import com.liangge.financesmanager.utils.FMUtils;
 import com.liangge.financesmanager.utils.XmlConfig;
 import com.liangge.financesmanager.widget.CustomLineChart;
 import org.apache.commons.lang3.StringUtils;
@@ -71,9 +72,7 @@ public class MainActivity extends Activity {
         button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, PayActivity.class);
-                startActivity(intent);
-                MainActivity.this.finish();
+                FMUtils.switchActivity(MainActivity.this, PayActivity.class);
             }
         });
     }

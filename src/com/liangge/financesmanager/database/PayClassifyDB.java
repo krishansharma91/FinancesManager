@@ -32,7 +32,7 @@ public class PayClassifyDB extends SQLiteOpenHelper{
         String[] payClassifyArray = context.getResources().getStringArray(R.array.payclassify_init);
         String initSql = xmlConfig.getString("payclassify_init");
         for(String classifyName : payClassifyArray){
-            sqLiteDatabase.execSQL(initSql, new Object[]{classifyName, 1});
+            sqLiteDatabase.execSQL(initSql, new Object[]{classifyName});
         }
     }
 

@@ -12,15 +12,15 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:numeric="integer"
+                android:maxLength="9"
                 android:text="0.00"
                 android:selectAllOnFocus="true"
-                android:inputType="number"/>
+                android:inputType="numberDecimal"/>
     </RelativeLayout>
     <!-- 网格栏 -->
     <GridView
             android:id="@+id/pay_gridview"
-            android:numColumns="4"
+            android:numColumns="5"
             android:verticalSpacing="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
@@ -34,7 +34,7 @@
                 android:id="@+id/pay_submit"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="记一笔"/>
+                android:text="@string/pay_submit"/>
     </RelativeLayout>
 </LinearLayout>
 

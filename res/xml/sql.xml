@@ -5,17 +5,29 @@
         create table if not exists fm_pay_classify (
             id integer primary key autoincrement,
             trade_name varchar(20) not null,
-            trade_type tinyint not null default 1,
-            trade_date timestamp not null default current_timestamp
+            update_time timestamp not null default current_timestamp
         );
         comment on column fm_pay_classify.trade_name is '交易名称';
-        comment on column fm_pay_classify.trade_type is '交易类型，0-收入，1-支出，默认1';
-        comment on column fm_pay_classify.trade_date is '生成时间';
+        comment on column fm_pay_classify.update_time is '更新时间';
+    </create>
+
+    <!-- 创建交易表 -->
+    <create id="trade_create">
+        create table if not exists fm_trade (
+            id integer primary key autoincrement,
+            payclassify_id integer not null,
+            trade_type tinyint not null default 1,
+            trade_money float(9,2) not null,
+            update_time timestamp not null default current_timestamp
+        );
+        comment on column fm_trade.payclassify_id is '分类id';
+        comment on column fm_trade.trade_type is '交易类型，0-收入，1-支出，默认1';
+        comment on column fm_trade.trade_money is '交易金额';
+        comment on column fm_trade.update_time is '更新时间';
     </create>
 
     <!-- 初始化支出分类列表 -->
     <create id="payclassify_init">
-        insert into fm_pay_classify (trade_name, trade_type) values(?, ?);
+        insert into fm_pay_classify (trade_name) values(?);
     </create>
-
 </sql>

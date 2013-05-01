@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">FinancesManager</string>
     <string name="app_exit_tips">再按一次退出程序</string>
-
+    <string name="pay_submit">记一笔</string>
     <!-- 初始化分类 -->
     <string-array name="payclassify_init">
         <item>餐饮</item>
